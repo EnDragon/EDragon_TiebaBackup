@@ -22,3 +22,6 @@ V0.8.2 重写了架构
 ### 用户界面操作：
 首先打开"运行我打开GUI.bat"
 可以看到打开了一个GUI
+不解释，都能看懂
+![](https://github.com/EnDragon/EDragon_TiebaBackup/tree/master/describeFiles)
+然后点开始就行了
