@@ -23,5 +23,5 @@ V0.8.2 重写了架构
 首先打开"运行我打开GUI.bat"
 可以看到打开了一个GUI
 不解释，都能看懂
-![<图片加载失败>](https://github.com/EnDragon/EDragon_TiebaBackup/describeFiles/tieba1.png)
+![<图片加载失败>](describeFiles/tieba1.png)
 然后点开始就行了
