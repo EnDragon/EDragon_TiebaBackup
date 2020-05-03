@@ -14,7 +14,7 @@ V0.8.2 重写了架构<br>
 <br>
 ## 使用教程：
 首先下载这个软件，如目录所示，尽量选高版本<br>
-[E龙贴吧备份下载地址](https://github.com/EnDragon/EDragon_TiebaBackup/releases)<br>
+
 <br>
 这个软件需要安装环境为java，可以去：https://www.java.com<br>
 
