@@ -40,11 +40,11 @@ V0.8.2 重写了架构<br>
 最后点开始就行了<br>
 <br>
 ### 命令行使用方法：
-```
-在这里调出命令窗口
-在运行之前请先输入chcp 936调整编码，不然输出到CMD上的都是乱码
-输入java -Dfile.encoding=utf-8 -jar BackUp.jar
+在这里调出命令窗口<br>
+在运行之前请先输入chcp 936调整编码，不然输出到CMD上的都是乱码<br>
+输入java -Dfile.encoding=utf-8 -jar BackUp.jar<br>
 后面是参数
+```
 bakBar是备份贴吧
 后面的参数是：
             [贴吧网址] [备份到本地的路径] [要备份的贴数（主题帖数量）]
@@ -75,7 +75,8 @@ bakBar是备份贴吧
 ```
 
 #### 例子：
-```   备份我个人的贴：
+```
+   备份我个人的贴：
        java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
    备份ndragon吧前100贴：
        java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
