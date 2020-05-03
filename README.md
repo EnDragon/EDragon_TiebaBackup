@@ -44,8 +44,8 @@ V0.8.2 重写了架构<br>
 在运行之前请先输入chcp 936调整编码，不然输出到CMD上的都是乱码<br>
 输入java -Dfile.encoding=utf-8 -jar BackUp.jar<br>
 后面是参数<br>
-bakBar是备份贴吧<br>
-后面的参数是：<br>
+> bakBar是备份贴吧<br>
+>> 后面的参数是：<br>
 > [贴吧网址] [备份到本地的路径] [要备份的贴数（主题帖数量）]<br>
 > [贴吧网址]就是贴吧的网址，比如：https://tieba.baidu.com/f?kw=ndragon&ie=utf-8<br>
 >> 后面不要加上&pn=，它会自己加上<br>
