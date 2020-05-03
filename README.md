@@ -14,10 +14,10 @@ V0.8.2 重写了架构<br>
 <br>
 ## 使用教程：
 首先下载这个软件，如目录所示，尽量选高版本<br>
-这个软件需要安装环境为java，可以去：https://www.java.com<br>
 <br>
-[E龙贴吧备份V0.8.2](E%E9%BE%99%E8%B4%B4%E5%90%A7%E5%A4%87%E4%BB%BDV0.8.2.zip)<br>
-[E龙贴吧备份V0.8.1](E%E9%BE%99%E8%B4%B4%E5%90%A7%E5%A4%87%E4%BB%BDV0.8.2.zip)<br>
+[E龙贴吧备份下载地址](releases)<br>
+<br>
+这个软件需要安装环境为java，可以去：https://www.java.com<br>
 
 <br>
 下载完成后<br>
