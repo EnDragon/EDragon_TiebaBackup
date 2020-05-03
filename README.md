@@ -85,9 +85,14 @@ V0.8.2 重写了架构<br>
 <br>
 #### 例子：
 > 备份我个人的贴：
+> 
 >> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
+> 
 > 备份ndragon吧前100贴：
+> 
 >> java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
+> 
 > 备份我个人的除了主题帖，回复外的内容：
+> 
 >> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
 
