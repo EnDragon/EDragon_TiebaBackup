@@ -25,3 +25,9 @@ V0.8.2 重写了架构
 不解释，都能看懂
 ![<图片加载失败>](describeFiles/tieba1.png)
 然后点开始就行了
+
+备份个人时Cookie只需要输入BDUSS=……..和STOKEN=……..，分号别丢
+![<图片加载失败>]describeFiles/tieba2.png)
+
+其他参数里的各种参数应该都可以自己知道，这里不解释
+![<图片加载失败>]describeFiles/tieba4.png)
