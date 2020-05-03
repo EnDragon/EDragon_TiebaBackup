@@ -1,8 +1,7 @@
 # E龙贴吧备份
-> A
->> B
-> B
->> A
+```
+	AAAA
+```
 贴吧备份工具，可以备份你的贴吧<br>
 <br>
 EDragonTiebaBackup<br>
