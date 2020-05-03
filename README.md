@@ -59,18 +59,18 @@ bakBar是备份贴吧
             [贴号] [备份到本地的路径]
                  [贴号]可以有多个用空格隔开
        后面还有一个补充参数：
-            -totelThreadNum 后面加数字，表示在读取网页时的多线程数量，默认是40
-            -noThread 表示不备份主题帖，后面不用加参数
-            -noReply 表示不备份回复，后面不用加参数
-			-noLike 表示不备份收藏
-			-noAt 表示不备份我被@到的
-			-noBars 表示不备份我的贴吧
-			-noFans 表示不备份我的粉丝
-			-noConcerns 表示不备份我的关注
-			-noReport 表示不备份我的举报
-			-noCompain 表示不备份我的投诉
-			-hasFansTies 表示备份粉丝的主页
-	-noCheck表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck```
+		-totelThreadNum 后面加数字，表示在读取网页时的多线程数量，默认是40
+		-noThread 表示不备份主题帖，后面不用加参数
+		-noReply 表示不备份回复，后面不用加参数
+		-noLike 表示不备份收藏
+		-noAt 表示不备份我被@到的
+		-noBars 表示不备份我的贴吧
+		-noFans 表示不备份我的粉丝
+		-noConcerns 表示不备份我的关注
+		-noReport 表示不备份我的举报
+		-noCompain 表示不备份我的投诉
+		-hasFansTies 表示备份粉丝的主页
+		-noCheck表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck```
 #### 例子：
 > 备份我个人的贴：
 > 
