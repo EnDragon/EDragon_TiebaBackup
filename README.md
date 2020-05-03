@@ -79,8 +79,10 @@ bakBar是备份贴吧
        java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
    备份ndragon吧前100贴：
        java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
-	备份我个人的除了主题帖，回复外的内容：
-	   java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
+   备份我个人的除了主题帖，回复外的内容：
+       java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
 ```
 
+**这个软件运行起来是耗流浪的，因为他本身就是爬取网上的帖子**
+**这是基本操作信息，更多信息请至"说明.pdf"**
 
