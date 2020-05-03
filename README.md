@@ -83,6 +83,7 @@ bakBar是备份贴吧
        java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
 ```
 
-**这个软件运行起来是耗流浪的，因为他本身就是爬取网上的帖子**
+**一般情况下直接用GUI就行了，命令提示符不用在意**<br>
+**这个软件运行起来是耗流浪的，因为他本身就是爬取网上的帖子**<br>
 **这是基本操作信息，更多信息请至"说明.pdf"**
 
