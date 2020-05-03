@@ -70,16 +70,24 @@ V0.8.2 重写了架构<br>
 > 
 > 后面还有一个补充参数：
 > 
->> -totelThreadNum -----后面加数字，表示在读取网页时的多线程数量，默认是40<br>
->> -noThread -----表示不备份主题帖，后面不用加参数<br>
->> -noReply -----表示不备份回复，后面不用加参数<br>
->> -noLike -----表示不备份收藏<br>
->> -noAt -----表示不备份我被@到的<br>
->> -noBars -----表示不备份我的贴吧<br>
->> -noFans -----表示不备份我的粉丝<br>
->> -noConcerns -----表示不备份我的关注<br>
->> -noReport -----表示不备份我的举报<br>
->> -noCompain -----表示不备份我的投诉<br>
->> -hasFansTies -----表示备份粉丝的主页<br>
->> -noCheck -----表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck<br>
+>> -totelThreadNum 后面加数字，表示在读取网页时的多线程数量，默认是40<br>
+>> -noThread 表示不备份主题帖，后面不用加参数<br>
+>> -noReply 表示不备份回复，后面不用加参数<br>
+>> -noLike 表示不备份收藏<br>
+>> -noAt 表示不备份我被@到的<br>
+>> -noBars 表示不备份我的贴吧<br>
+>> -noFans 表示不备份我的粉丝<br>
+>> -noConcerns 表示不备份我的关注<br>
+>> -noReport 表示不备份我的举报<br>
+>> -noCompain 表示不备份我的投诉<br>
+>> -hasFansTies 表示备份粉丝的主页<br>
+>> -noCheck 表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck<br>
 <br>
+#### 例子：
+> 备份我个人的贴：
+>> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
+> 备份ndragon吧前100贴：
+>> java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
+> 备份我个人的除了主题帖，回复外的内容：
+>> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
+
