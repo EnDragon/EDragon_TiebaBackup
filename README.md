@@ -40,7 +40,8 @@ V0.8.2 重写了架构<br>
 最后点开始就行了<br>
 <br>
 ### 命令行使用方法：
-`在这里调出命令窗口
+```
+在这里调出命令窗口
 在运行之前请先输入chcp 936调整编码，不然输出到CMD上的都是乱码
 输入java -Dfile.encoding=utf-8 -jar BackUp.jar
 后面是参数
@@ -70,18 +71,16 @@ bakBar是备份贴吧
 		-noReport 表示不备份我的举报
 		-noCompain 表示不备份我的投诉
 		-hasFansTies 表示备份粉丝的主页
-		-noCheck表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck`
+		-noCheck表示不对文件进行检查，因为本软件获取验证的网址github很不稳定，所以有可能导致获取了N次也没有获取到，导致检查不了，如果一直获取不到请加上-noCheck
+```
 
 #### 例子：
-> 备份我个人的贴：
-> 
->> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
-> 
-> 备份ndragon吧前100贴：
-> 
->> java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
-> 
-> 备份我个人的除了主题帖，回复外的内容：
-> 
->> java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
+```   备份我个人的贴：
+       java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I"
+   备份ndragon吧前100贴：
+       java -Dfile.encoding=utf-8 -jar BackUp.jar bakBar "https://tieba.baidu.com/f?kw=ndragon&ie=utf-8" "F:\backup" 100
+	备份我个人的除了主题帖，回复外的内容：
+	   java -Dfile.encoding=utf-8 -jar BackUp.jar bakPerssion "[我的Cookie]" "F:\I" –noThread -noReply
+```
+
 
