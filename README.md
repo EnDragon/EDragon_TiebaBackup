@@ -1,4 +1,6 @@
 # E龙贴吧备份
+
+**VO.8.2有问题，请先下载V0.8**<br>
 贴吧备份工具，可以备份你的贴吧<br>
 <br>
 EDragonTiebaBackup<br>
