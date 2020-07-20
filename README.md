@@ -3,7 +3,8 @@
 **V0.8.5版本，应该没有问题**<br>
 贴吧备份工具，可以备份你的贴吧<br>
 <br>
-**下载地址：**[E龙贴吧备份V0.8.5.zip](https://github.com/EnDragon/EDragon_TiebaBackup/files/4941772/E.V0.8.5.zip)<br>https://pan.baidu.com/s/16872tMkmaF60GNOq_z7XAQ<br>(提取码：s1ig)<br>**使用说明：**https://shimo.im/docs/4b141d04a1b84545/
+**下载地址：**[E龙贴吧备份V0.8.5.zip](https://github.com/EnDragon/EDragon_TiebaBackup/files/4941772/E.V0.8.5.zip)<br>https://pan.baidu.com/s/16872tMkmaF60GNOq_z7XAQ<br>(提取码：s1ig)<br>
+**使用说明：**https://shimo.im/docs/4b141d04a1b84545/
 <br><br>
 EDragonTiebaBackup<br>
 E龙贴吧备份器<br>
