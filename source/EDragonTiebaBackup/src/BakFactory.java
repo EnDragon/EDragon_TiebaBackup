@@ -33,8 +33,7 @@ public class BakFactory {
 	volatile ArrayList<String> urls = new ArrayList<>();
 	boolean bak2 = false;
 	String cookie = "";
-	//String cookie = BIDUPSID=91A56CE9AB4E706F2686EDD900CBC3C4; PSTM=1549978226; TIEBA_USERTYPE=3dff3078ed7a0556873eca45; BAIDUID=1047F3CFEDC04CC48737F9D1F1F7F825:FG=1; TIEBAUID=cb23caae14130a0d384a57f1; Hm_lvt_98b9d8c2fd6608d564bf2ac2ae642948=1596026748; st_key_id=17; wise_device=0; Hm_lpvt_98b9d8c2fd6608d564bf2ac2ae642948=1596026867; st_data=06fed0afb2ec52432e7ef3a577e10ca62ab20d3f999a29710d4b5c84ddf45875d741ffadd9f31038a028b41ae6bc1643c1e5f96d74bae630a2e0723238c7e21b240e419f0035c61faa4deca9c04b7292009e62dcfc3d4819185ea4d75d5188c3f1f62741c4e7c8d4dc733a26b7e4be8111dbfdd9a5120b1a488223a28d088b1f; st_sign=dad3a764
-	//我不知道上面的一些参数是什么意思，这是我没有登录任何账号时的Cookie，我不确认这样子是否安全，所以我没有加进去
+
 	Writer writer;
 	
 	public BakFactory(String path, String to, int totel){
