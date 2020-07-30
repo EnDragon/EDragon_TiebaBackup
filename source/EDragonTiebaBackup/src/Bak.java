@@ -262,18 +262,18 @@ public class Bak {
 	public static void debug(){
 		//EDTBTool.path = "F:\\Western Dragon Bak 20200729 3\\tiezi";
 		/*BakFactory bakFactory = new BakFactory("F:\\testT", "", 1);
-		bakFactory.bak("3506593240", "F:\\testT", "HTML");
+		bakFactory.bak("3506593240", "F:\\testT", "TXT");
 		bakFactory.sleep();
 		bakFactory.shutdown();*/
 		//EDTBTool.main(new String[]{"search", "floor", "time=2020-07-29.*", "F:\\seatchResult"});
 		//EDTBTool.main(new String[]{"draw", "-outFile", "F:\\seatchResult", "F:\\bakaaa"});
 		//EDTBTool.main(new String[]{"translate", "HTML", EDTBTool.path});
-		try {
+		/*try {
 			Gui.main(new String[]{});
 		} catch (IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
     public static void main(String[] args){

@@ -112,7 +112,7 @@ public class Floor {
 			return toJson().toString();
 		}
 		else if(mode.equals("TXT")){
-			
+			return toTxt();
 		}
 		return null;
 	}
@@ -212,29 +212,23 @@ public class Floor {
 			for(int i = 1; i < floors.size() + 1; i++){
 				string += floors.get(i).toTxt() + "=======================\r\n\r\n";
 			}
-			return toTxt();
+			return string;
 		}
 		if(a.a == null){
 			string += content.replaceAll("<br>", "\r\n");
-			string += username;
+			string += "\r\n   " + username;
 			string += "  " + num + "楼" + "  ";
-			try {
-				string += new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(time).getTime() + "\r\n";
-			} catch (ParseException e) {
-				// TODO 自动生成的 catch 块
-				System.err.println("time error" + a.id);
-				e.printStackTrace();
-			}
+			string += time + "\r\n";
 			
 			for(int i = 1; i < floors.size() + 1; i++){
-				string += floors.get(i).toTxt();
+				string += floors.get(i).toTxt() + "\r\n";
 			}
 			
 			return string;
 		}
 		if(a.a.a == null){
-			string += "   ---" + content.replaceAll("<br>", "\r\n");
-			string += "        " + username;
+			string += "      ---" + content.replaceAll("<br>", "\r\n") + "\r\n";
+			string += "           " + username;
 			return string;
 		}
 		return null;

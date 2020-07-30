@@ -27,7 +27,7 @@ public class BakBar extends BakFactory{
 					String v = null;
 					try {
 						v = get(to + nowI);
-						System.out.println(v);
+						//System.out.println(v);
 					} catch (Throwable e1) {
 						// TODO 自动生成的 catch 块
 						e1.printStackTrace();

@@ -6,13 +6,13 @@
 			<accessrule kind="accessible" pattern="**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/apache-commons-lang.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/commons-beanutils-1.9.3.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/commons-collections-3.2.1-1.0.0.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/commons-lang3-3.9.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/ezmorph-1.0.6.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/json-lib-2.4-jdk15.jar"/>
-	<classpathentry kind="lib" path="F:/新建文件夹 3/morph-1.1.1.jar"/>
+	<classpathentry kind="lib" path="Libraries/apache-commons-lang.jar"/>
+	<classpathentry kind="lib" path="Libraries/commons-beanutils-1.9.3.jar"/>
+	<classpathentry kind="lib" path="Libraries/commons-collections-3.2.1-1.0.0.jar"/>
+	<classpathentry kind="lib" path="Libraries/commons-lang3-3.9.jar"/>
+	<classpathentry kind="lib" path="Libraries/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="Libraries/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="lib" path="Libraries/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="Libraries/morph-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
