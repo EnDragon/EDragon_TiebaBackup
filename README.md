@@ -25,7 +25,10 @@ https://shimo.im/docs/4b141d04a1b84545/<br>
 				
 ## 代码相关
 
-因为本人编写这个代码的时候是一点一点加上去的，且代码编写跨度长达一年，所以代码很乱<br>
+因为本人编写这个代码的时候是一点一点加上去的，且代码编写跨度长达一年，所以代码很乱<br><br>
+
+把工程clone下来，source内为源码<br>
+用eclipse打开那个source内的EDragonTiebaBackup<br>
 
 ### 文件解释：
 	 		Bak.java --入口文件以及命令解释<br>
