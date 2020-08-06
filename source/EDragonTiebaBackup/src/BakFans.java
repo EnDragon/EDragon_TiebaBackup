@@ -33,6 +33,7 @@ public class BakFans extends BakPersonal{
 	}
 	
 	public void getFans(){
+		System.out.println("获取所有粉丝...");
 		getAll(url, "下一页&gt;", this, new TT() {
 			
 			@Override
@@ -58,6 +59,7 @@ public class BakFans extends BakPersonal{
 					Matcher matcher3 = Pattern.compile("(?<=(portrait=\")).*?(?=\")").matcher(string);
 					matcher3.find();
 					bar[2] = matcher3.group();
+					System.out.println("获取粉丝：昵称为：\"" + bar[0] + "\" 用户名为：\"" + bar[1] + "\"");
 					t.add(bar);
 				}
 				synchronized (users) {
@@ -65,6 +67,7 @@ public class BakFans extends BakPersonal{
 				}
 			}
 		});
+		System.out.println("获取完成");
 	}
 	
     public static String Header(String username, String nickname, String tienum, String age, String head){
@@ -134,12 +137,13 @@ public class BakFans extends BakPersonal{
 		ArrayList<String[]> users = new ArrayList<>();
 		getFans();
 		sleep();
-		System.out.println(this.users.size() + " " + this.users);
+		//System.out.println(this.users.size() + " " + this.users);
 		int n = this.users.size();
 		for(int i = 1; i < n + 1; i++){
 			if(this.users.get(i) != null && this.users.get(i).size() != 0)
 			users.addAll(this.users.get(i));
 		}
+		System.out.println("你的粉丝有：" + users);
 		totel = users.size();
 		System.err.println("len" + users.size());
 		writer.write("<font size=20px><strong><p>" + title +"</p></strong></font>");
@@ -151,8 +155,11 @@ public class BakFans extends BakPersonal{
 		System.err.println(title + " " + urls.size());
 		totel = users.size();
 		AAA aaa = new AAA();
+		System.out.println("备份粉丝...");
 		bakFans(aaa, users);
 		sleep();
+		System.out.println("完成备份");
+		System.out.println("写入文件...");
 		//Thread.sleep(500);
 		urls = new ArrayList<>();
 		bak2 = true;

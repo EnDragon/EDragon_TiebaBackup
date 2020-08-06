@@ -119,7 +119,7 @@ public class Bak {
 	static Map<String, String> valueMap = new HashMap<>();
 	public static String outMode = "HTML";
 	
-	public static final String version = "0.8.7";
+	public static final String version = "0.8.8";
 	
 	public static void update(String[] args){
     	if(valueMap.get("-noCheck") == null)
@@ -257,14 +257,15 @@ public class Bak {
     		System.out.println("已跳过检查");
 	}
 	
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	public static void debug(){
 		//EDTBTool.path = "F:\\Western Dragon Bak 20200729 3\\tiezi";
-		/*BakFactory bakFactory = new BakFactory("F:\\testT", "", 1);
-		bakFactory.bak("3506593240", "F:\\testT", "TXT");
+		//System.out.println(Tool.get("https://tieba.baidu.com/p/6830257920?pn=2", new HashMap<>()));
+		BakFactory bakFactory = new BakFactory("F:\\testT", "", 1);
+		//bakFactory.bak("4001044315", "F:\\testT", "HTML");
 		bakFactory.sleep();
-		bakFactory.shutdown();*/
+		bakFactory.shutdown();
 		//EDTBTool.main(new String[]{"search", "floor", "time=2020-07-29.*", "F:\\seatchResult"});
 		//EDTBTool.main(new String[]{"draw", "-outFile", "F:\\seatchResult", "F:\\bakaaa"});
 		//EDTBTool.main(new String[]{"translate", "HTML", EDTBTool.path});
@@ -278,10 +279,11 @@ public class Bak {
 	
     public static void main(String[] args){
     	
-    	if(DEBUG){
+    	//args = new String[]{"bak",  "F:\\bak_20200722" ,"4001044315"/*, "6220722353", "6837050684"*/, "-totelThreadNum", "40"};
+    	/*if(DEBUG){
     		debug();
     		return;
-    	}
+    	}*/
     	
     	if(args[0].equals("Gui")){
     		try {
@@ -479,14 +481,17 @@ public class Bak {
     	}
     	else if(args[0].equals("bak")){
     		path = args[1];
-    		BakFactory bakFactory = new BakFactory(path, "", args.length - 2);
-    		for(int i = 2; i < args.length; i++){
+    		BakFactory bakFactory = new BakFactory(path, "", args.length - 4);
+    		bakFactory.totel = args.length - 4;
+    		for(int i = 2; i < args.length - 2; i++){
     			bakFactory.urls.add(args[i]);
     		}
 			bakFactory.bakThreads(outMode);
 			bakFactory.sleep();
 			bakFactory.shutdown();
     	}
+    	
+    	System.out.println("程序退出");
     	
     }
     

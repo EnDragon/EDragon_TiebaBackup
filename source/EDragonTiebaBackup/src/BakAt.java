@@ -18,6 +18,7 @@ public class BakAt extends BakPersonal{
 	}
 	
 	public void getAt(){
+		System.out.println("获取所有@当中...");
 		getAll("http://tieba.baidu.com/i/i/atme", "下一页&gt;", this, new TT() {
 			
 			@Override
@@ -41,13 +42,14 @@ public class BakAt extends BakPersonal{
 						t.add(matcher.group());
 						arrayList.add(matcher2.group().substring(0, matcher2.group().indexOf("?")));
 						titles.add(matcher3.group());
+						System.out.printf("获取到@ nickname = \"%s\" url = \"%s\" title = \"%s\"\n", matcher.group(), matcher2.group(), matcher3.group());
 					}
 				}
 				synchronized (at) {
 					at.put(nowI, t);
 				}
 				synchronized (readMap) {
-					System.out.println(nowI);
+					//System.out.println(nowI);
 					readMap.put(nowI, arrayList);
 				}
 				synchronized (mapTitle) {
@@ -64,7 +66,7 @@ public class BakAt extends BakPersonal{
 		writer.write("<body>");
 		ArrayList<String> titles = new ArrayList<>();
 		getAt();
-		System.out.println(readMap.size() + " " + readMap);
+		System.out.println("获取完毕");
 		ArrayList<String> at = new ArrayList<>();
 		int n = readMap.size();
 		for(int i = 1; i < n + 1; i++){
@@ -74,12 +76,16 @@ public class BakAt extends BakPersonal{
 			titles.addAll(mapTitle.get(i));
 			at.addAll(this.at.get(i));
 		}
+		System.out.println("你的@有：" + at);
 		nowIndex = 0;
 		totel = urls.size();
 		bak2 = true;
+		System.out.println("备份所有被@的地方：");
 		bakThreads(Bak.outMode);
 		sleep();
+		System.out.println("备份完成");
 		bak2 = false;
+		System.out.println("输出文件");
 		writer.write("<font size=20px><strong><p>你的At</p></strong></font>");
 		for(int i = 0; i < urls.size(); i++){
 			writer.write("<div><font size:10px><p>" + at.get(i) + "&nbsp@你&nbsp" + "<a style=\"color:#808080\" href=\"tiezi/" + urls.get(i) + ".html\">" + titles.get(i) + "</p></font></div>");

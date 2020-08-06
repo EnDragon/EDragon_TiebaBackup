@@ -17,13 +17,13 @@ public class BakBar extends BakFactory{
 	}
 	
 	public void getAllThread(){
-		System.out.println("AAAAAAAAAAAAAAAAAAA" + (max + 1));
+		System.out.println("获取贴吧，贴数=" + totel + " 页数=" + (max + 1));
 		for(int i = 0; i < totel; i+=50){
 			int nowI = i;
 			executorService.execute(new Runnable(){
 				
 				public void run() {
-					System.out.println(nowI);
+					System.out.println("获取页数：" + nowI);
 					String v = null;
 					try {
 						v = get(to + nowI);
@@ -44,6 +44,7 @@ public class BakBar extends BakFactory{
 						int index = v.indexOf("title=\"", nowIndex);
 						int index2 = v.indexOf("\"", index + 8);
 						String title = v.substring(index + 7, index2);
+						System.out.println("获取到帖子：id=" + id + " title=\"" + title + "\" page=" + (nowI / 50 + 1));
 						synchronized (titles) {
 							titles.put(Long.parseLong(id), title);
 						}
@@ -58,13 +59,15 @@ public class BakBar extends BakFactory{
 	}
 	
 	public void writeFeilds(){
-		System.out.println(titles.size() + " " + titles);
+		//System.out.println(titles.size() + " " + titles);
 		try {
+			System.out.println("输出\"帖子总id.txt\"");
 			FileWriter writer = new FileWriter(path + "/帖子总id.txt");
 			for(int i = 0; i < totel; i++){
 				writer.write(i + " " + (i < urls.size() ? urls.get(i) : "null") + " ");
 			}
 			writer.close();
+			System.out.println("输出\"帖子总贴目录.html\"");
 			writer = new FileWriter(path + "/贴吧总贴目录.html");
 			writer.write("<html><head><meta charset=\"UTF-8\"></head>");
 			writer.write("<body>");

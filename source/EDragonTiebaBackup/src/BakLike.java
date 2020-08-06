@@ -19,6 +19,7 @@ public class BakLike extends BakPersonal{
 	}
 	
 	private int getLike(){
+		System.out.println("获取所有收藏...");
 		int i = getAll("http://tieba.baidu.com/i/i/storethread", "下一页&gt;", this, new TT() {
 			@Override
 			public void run(Object... objects) throws Throwable {
@@ -41,6 +42,7 @@ public class BakLike extends BakPersonal{
 					if(matcherLike.find()){
 						tag = matcherLike.group();
 					}
+					System.out.println("获取到收藏 id=" + matcher.group().substring(3) + " title=\"" + matcherTitle.group() + "\" tag=\"" + tag + "\"");
 					t.add(tag);
 					}
 				}
@@ -48,7 +50,7 @@ public class BakLike extends BakPersonal{
 					tag.put(nowI, t);
 				}
 				synchronized (readMap) {
-					System.out.println(nowI);
+					//System.out.println(nowI);
 					readMap.put(nowI, arrayList);
 				}
 				synchronized (mapTitle) {
@@ -56,6 +58,7 @@ public class BakLike extends BakPersonal{
 				}
 			}
 		});
+		System.out.println("获取完毕");
 		return i;
 	}
 	
@@ -68,7 +71,7 @@ public class BakLike extends BakPersonal{
     		ArrayList<String> tags = new ArrayList<>();
     		int I = getLike();
     		//System.out.println(readMa);
-    		System.out.println(readMap.size() + " " + readMap);
+    		//System.out.println(readMap.size() + " " + readMap);
     		int n = I;
 			for(int i = 1; i < n + 1; i++){
 				if(readMap.get(i) == null)
@@ -77,14 +80,18 @@ public class BakLike extends BakPersonal{
 				titles.addAll(mapTitle.get(i));
 				tags.addAll(tag.get(i));
 			}
+			System.out.printf("所有收藏：" + urls);
 			nowIndex = 0;
 			totel = urls.size();
 			bak2 = true;
+			System.out.printf("备份所有收藏...");
 			bakThreads(Bak.outMode);
 			sleep();
+			System.out.printf("备份完毕");
 			bak2 = false;
-			System.out.println(readMap);
-			System.out.println(urls.size() + " " + tags.size());
+			//System.out.println(readMap);
+			//System.out.println(urls.size() + " " + tags.size());
+			System.out.printf("输出文件...");
 			writer.write("<font size=20px><strong><p>你的收藏</p></strong></font>");
 			for(int i = 0; i < urls.size(); i++){
 				writer.write("<div><font size:10px><p><a style=\"color:#808080\" href=\"tiezi/" + 

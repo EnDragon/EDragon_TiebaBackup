@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -73,6 +76,7 @@ public class BakFactory {
 	public void bakThreads(String outMode){
 		for(int i = 0; i < totel; i++){
 			int I = i;
+			System.out.println("开始备份id = " + urls.get(I) + " " + I + "/" + urls.size());
 			executorService.execute(new Runnable() {
 				public void run() {
 					bak(urls.get(I), path, outMode);
@@ -88,6 +92,7 @@ public class BakFactory {
 	//备份一个帖子的函数
     public void bak(String s, String path, String outMode){
     	//System.out.println(s);
+    	System.out.println(":Backing up Thread[id=" + s + "]");
     	
     	if(bak2){
 		File file = new File(path + "/tiezi/" + s + ".html");
@@ -139,8 +144,10 @@ public class BakFactory {
 			}
 			int l = Integer.parseInt(matcher.group().replaceAll("<[^>]*>", ""));
 			for(int i = 1; i < l + 1; i++){
+				System.out.println("::正在备份：第" + i + "页");
 				int pn = i;
 				bak(s, pn, tie, aaa, l, oStream, outMode, path);
+				//System.out.println("完成备份：" + i + "页");
 			}
 			
 			oStream.write(tie.write(outMode));
@@ -220,9 +227,9 @@ public class BakFactory {
 		}
 		int i1 = v.indexOf("title: \"");
 		int i2 = v.indexOf("\"", i1 + 9);
-		System.out.println(s);
+		//System.out.println("title=" + s);
 		String title = Matcher.group();
-		System.out.println(title);
+		System.out.println("title = \"" + title + "\"");
 		
 		tie.title = title;
 		}
@@ -238,6 +245,7 @@ public class BakFactory {
 		Pattern ppp = Pattern.compile("(?<=(\"forum_id\":))\\d");
 		Matcher ma = ppp.matcher(V);
 		ma.find();
+		System.out.println(":::get totalComment");
 		String string = get("https://tieba.baidu.com/p/totalComment?t=0&tid=" + s + "&pn=" + pn + "&see_lz=0");
 		Object o = JSONObject.fromObject(string).getJSONObject("data").get("comment_list");
 		JSONObject json = null;
@@ -264,7 +272,7 @@ public class BakFactory {
 				a(VV, tie, path, s, aaa, jso, "", pn, JSONObject.fromObject(string), outMode);
 			}
 		});
-		System.out.println(pn);//云里雾里的输出报告
+		//System.out.println(pn);//云里雾里的输出报告
 		}
 		catch (Throwable e) {
 			System.err.println("FAIL  " + s + " " + pn);
@@ -306,9 +314,9 @@ public class BakFactory {
 				if(nowIndex + matcher5.group().length() > i2){
 					System.err.println("OUT " + s + "\r\n" + V);
 				}
-				System.out.println(matcher5.group() + " " + i2);
+				//System.out.println(matcher5.group() + " " + i2);
 					String string = V.substring(nowIndex + matcher5.group().length(), i2).replaceAll("\\s", "");
-					System.out.println(string);
+					//System.out.println(string);
 					if(string.indexOf(">来自：") != -1){
 						Matcher matcher = Pattern.compile("(?<=r-url\">)tieba.*?(?=<)").matcher(string);
 						Matcher matcher2 = Pattern.compile("(?<=(=\"j-no-opener-url\">))[\\s\\S]*?(?=<)").matcher(string);
@@ -358,28 +366,90 @@ public class BakFactory {
 					
 					if(bak != null){
 						Pattern patte = Pattern.compile("(?<=(post_content_))\\d{1,}");
+						
 						Matcher matche = patte.matcher(V);
 						matche.find();
 						
 						JSONObject jso = bak.getJSONObject(matche.group());
 						if(jso.toString().equals("null"))
 							return;
-						JSONArray array = jso.getJSONArray("comment_info");
-						for(int j = 0; j < array.size(); j++){
-							JSONObject aJsonObject = array.getJSONObject(j);
-							
-							//JSONObject jsonObject = ojson.getJSONObject("data").getJSONObject("user_list").getJSONObject(aJsonObject.getLong("user_id") + "");
-							//System.out.print(jsonObject);
-							//String[] strs = 
-							//user.println(jsonObject.getString("user_name") + " " + jsonObject.getString("user_nickname") + "\r\n");
-							Floor floor = new Floor(aJsonObject.getString("username"), strs(aJsonObject.getString("content"), s, aaa, "", 1), "", -1, "", aJsonObject.getString("username"));
-							//String[] sss = {aJsonObject.getString("content"), "---" + aJsonObject.getString("username")/* + " " + getTime(aJsonObject.getString("now_time"))*/ + "<br><hr>"};
-							floor2.add(floor);
-							//strings[i] += "\r\n  " + aJsonObject.get("content");
+						int commentNum = jso.getInt("comment_num");
+						int commentListNum = jso.getInt("comment_list_num");
+						for(int i = 0; i < commentNum; i+= commentListNum){
+							System.out.println("::::获取id=" + s + " pid=" + matche.group() + " 回复页数：" + (i + 1));
+							//System.out.println("AAAAAAAAAAAA");
+							if(i == 0){
+								JSONArray array = jso.getJSONArray("comment_info");
+								for(int j = 0; j < array.size(); j++){
+									JSONObject aJsonObject = array.getJSONObject(j);
+									
+									//JSONObject jsonObject = ojson.getJSONObject("data").getJSONObject("user_list").getJSONObject(aJsonObject.getLong("user_id") + "");
+									//System.out.print(jsonObject);
+									//String[] strs = 
+									//user.println(jsonObject.getString("user_name") + " " + jsonObject.getString("user_nickname") + "\r\n");
+									Floor floor = new Floor(aJsonObject.getString("username"), strs(aJsonObject.getString("content"), s, aaa, "", 1), "", -1, "", aJsonObject.getString("username"));
+									floor.time = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(new Date(aJsonObject.getLong("now_time") * 1000));
+									//String[] sss = {aJsonObject.getString("content"), "---" + aJsonObject.getString("username")/* + " " + getTime(aJsonObject.getString("now_time"))*/ + "<br><hr>"};
+									floor2.add(floor);
+									//strings[i] += "\r\n  " + aJsonObject.get("content");
+								}
+								continue;
+							}
+							ArrayList<Floor> floors = getFloor2(Long.parseLong(s), Long.parseLong(matche.group()), i + 1, aaa);
+							for(int j = 0; j < floors.size(); j++){
+								//System.out.println("AAAAAAAAAAAA" + j);
+								floor2.add(floors.get(j));
+							}
 						}
 					}
 			}
 		});
+    }
+    
+    private ArrayList<Floor> getFloor2(long id, long pid, int pn, AAA aaa, long... time){
+    	if(time.length == 0){
+    		time = new long[]{System.currentTimeMillis()};
+    	}
+    	ArrayList<Floor> floors = new ArrayList<>();
+    	try{
+    	String str = get("https://tieba.baidu.com/p/comment?tid=" + id + "&pid=" + pid + "&pn=" + pn + "&t=" + time[0], "Cookie", cookie);
+    	String[] strs = split("  " + str, "<li class=\"lzl_single_post", "li");
+    	for(int i = 0; i < strs.length; i++){
+    		//System.out.println(strs[i]);
+    		//System.out.println("AAAAAAAAAAAAAAAAAAAAAAA " + strs.length + " " + i);
+    		Floor floor = new Floor();
+        	Matcher username = Pattern.compile("/home/main(/)?\\?un=[^&]*").matcher(strs[i]);
+        	username.find();
+        	Matcher username2 = Pattern.compile("(?<=(un=)).*").matcher(username.group());
+        	username2.find();
+        	try {
+				floor.username = URLDecoder.decode(username2.group(), "UTF-8");
+				//System.err.println("      AAA      " + floor.username);
+			} catch (UnsupportedEncodingException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+        	//System.out.println("AAAAAAAAAAAAAAAAAAAAAAA " + strs.length + " " + i);
+        	Pattern p = Pattern.compile("(?<=(target=\"_blank\" username=\"" + floor.username + "\">)).*?(?=</a>)");
+        	Matcher m = p.matcher(strs[i]);
+        	m.find();
+        	floor.user = strs(m.group(), id + "", aaa, "", 1);
+        	Pattern pa = Pattern.compile("(?<=(<span class=\"lzl_time\">))[^>]*(?=</span>)");
+        	Matcher ma = pa.matcher(strs[i]);
+        	ma.find();
+        	floor.time = ma.group();
+        	//System.out.println("AAAAAAAAAAAAAAAAAAAAAAA " + strs.length + " " + i);
+        	Matcher matcher = Pattern.compile("<span class=\"lzl_content_main\"[\\s\\S]*?</span>").matcher(strs[i]);
+        	matcher.find();
+        	floor.content = strs(matcher.group(), id + "", aaa, "", 1).replaceAll("(^<span.*?>)|(</span>$)", "");
+        	floors.add(floor);
+    	}
+    	}
+    	catch(Throwable exception){
+    		exception.printStackTrace();
+    	}
+    	return floors;
+    	
     }
     
     public void a2(String V, Floor tie, AAA aaa, String s, String add, int pn) throws Throwable{
@@ -411,6 +481,8 @@ public class BakFactory {
     		tie.from = ma.group();
     	}
     	
+    	System.out.println(":::获取id=" + s + " floor=" + tie.num);
+    	
     }
     
     public String strs(String str, String s, AAA aaa, String add, int i){
@@ -439,7 +511,7 @@ public class BakFactory {
 			}
 			String name = matcher2.group();
 			int noww = add(aaa);
-			System.out.println(Thread.currentThread().getName() + " DOWNLOAD 来自" + string + " " + name + " " + noww);
+			System.out.println("----DOWNLOAD 来自" + string + " " + name + " " + noww);
 			String names = name.substring(name.lastIndexOf("/") + 1);
 			//System.out.println("AAAAA" + matcher.group());
 			if(map.get(name) == null){
@@ -545,6 +617,7 @@ public class BakFactory {
 			}
 			String VV = str.substring(index2, i2);
 			//System.out.println(VV);
+			//System.err.println(VV);
     		arrayList.add(VV);
     		index1 = index2;
     	}
@@ -556,7 +629,7 @@ public class BakFactory {
     }
     
     public String get(String s, String...add) throws Throwable    {
-    	System.out.println(s);
+    	System.out.println("----GET " + s);
     	StringBuffer buffer = new StringBuffer("");
     	int i2 = 0;
     	while(i2 < 7)
@@ -589,6 +662,7 @@ public class BakFactory {
     	String str = new String(chars);
     	
 		if(con.getResponseCode() == 301){
+			System.out.println("----Redirect " + con.getHeaderField("Location"));
 			str = get(con.getHeaderField("Location"), "Cookie", cookie);
 		}
     	
@@ -605,13 +679,13 @@ public class BakFactory {
     		}
     	}
     	
-    	return "NULL";
+    	return null;
     	
     	
     }
     
     public String getMore(String s, String...add) throws Throwable    {
-    	System.out.println(s);
+    	System.out.println("----GET " + s);
     	StringBuffer buffer = new StringBuffer("");
     	int i2 = 0;
     	while(i2 < 7)
@@ -643,6 +717,7 @@ public class BakFactory {
     	String str = new String(chars);
     	
 		if(con.getResponseCode() == 301){
+			System.out.println("----Redirect " + con.getHeaderField("Location"));
 			str = get(con.getHeaderField("Location"), "Cookie", cookie);
 		}
     	
@@ -659,13 +734,13 @@ public class BakFactory {
     		}
     	}
     	
-    	return "NULL";
+    	return null;
     	
     	
     }
     
     public String post(String s, String[] add, String file){
-    	System.out.println(s);
+    	System.out.println("----POST " + s);
     	StringBuffer buffer = new StringBuffer("");
     	int i2 = 0;
     	while(i2 < 7)
@@ -702,6 +777,7 @@ public class BakFactory {
     	String str = new String(chars);
     	
 		if(con.getResponseCode() == 301){
+			System.out.println("----Redirect " + con.getHeaderField("Location"));
 			str = get(con.getHeaderField("Location"), "Cookie", cookie);
 		}
     	
@@ -718,7 +794,7 @@ public class BakFactory {
     		}
     	}
     	
-    	return "NULL";
+    	return null;
     }
     
     public void download(String s, String path, String... add) throws Throwable{

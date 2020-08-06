@@ -16,6 +16,7 @@ public class BakBars extends BakPersonal{
 	}
 	
 	public void getBars(){
+		System.out.println("获取所有我的贴吧中...");
 		getAll("http://tieba.baidu.com/f/like/mylike", "下一页&gt;", this, new TT() {
 			
 			@Override
@@ -36,6 +37,7 @@ public class BakBars extends BakPersonal{
 					matcher.find();
 					bar[2] = matcher.group();
 					t.add(bar);
+					System.out.printf("获取到@ barName = \"%s\" exp = \"%s\" level = \"%s\"\n", bar[0], bar[1], bar[2]);
 					//System.out.print(Arrays.toString(bar).getBytes("Unicode"));
 				}
 				synchronized (bars) {
@@ -43,6 +45,7 @@ public class BakBars extends BakPersonal{
 				}
 			}
 		}, "GBK");
+		System.out.println("获取完成");
 	}
 	
 	public void run() throws Exception{
@@ -52,15 +55,17 @@ public class BakBars extends BakPersonal{
 		writer.write("<body>");
 		ArrayList<String[]> bars = new ArrayList<>();
 		getBars();
-		System.out.println(this.bars.size() + " " + this.bars);
+		//System.out.println(this.bars.size() + " " + this.bars);
 		int n = this.bars.size();
 		for(int i = 1; i < n + 1; i++){
 			if(this.bars.get(i) == null)
 				System.err.println(i);
 			bars.addAll(this.bars.get(i));
 		}
+		System.out.println("你的贴吧有：" + bars);
 		nowIndex = 0;
 		totel = urls.size();
+		System.out.println("写入文件");
 		writer.write("<font size=20px><strong><p>你的贴吧</p></strong></font>");
 		for(int i = 0; i < bars.size(); i++){
 			writer.write("<div><font size:10px><p>" + bars.get(i)[0] + "&nbsp;" +  bars.get(i)[1] + "&nbsp;" + bars.get(i)[2] + "</p></font></div>");

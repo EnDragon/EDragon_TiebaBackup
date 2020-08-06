@@ -23,6 +23,7 @@ public class BakPersonsReply extends BakPersonal{
 	}
 	
 	private void getAllReply(){
+		System.out.println("获取所有回复...");
 		
 		getAll("http://tieba.baidu.com/i/i/my_reply", "下一页&gt;", this, new TT() {
 			
@@ -40,9 +41,10 @@ public class BakPersonsReply extends BakPersonal{
 					arrayList.add(matcher.group());
 					matcher2.find();
 					titles.add(matcher2.group());
+					System.out.printf("获取到回复 url = \"%s\" title = \"%s\"\n", matcher.group(), matcher2.group());
 				}
 				synchronized (readMap) {
-					System.out.println(nowI);
+					//System.out.println(nowI);
 					readMap.put(nowI, arrayList);
 				}
 				synchronized (mapTitle) {
@@ -50,6 +52,7 @@ public class BakPersonsReply extends BakPersonal{
 				}
 			}
 		});
+		System.out.println("获取完毕");
 	}
 	
 	private void getReply(String outMode){
@@ -57,6 +60,7 @@ public class BakPersonsReply extends BakPersonal{
 			int I = i;
 			executorService.execute(new Runnable() {
 				public void run() {
+					System.out.println("开始备份id = " + urls.get(I) + " " + I + "/" + urls.size());
 					getReply2(urls.get(I), I, outMode);
 				}
 			});
@@ -76,7 +80,7 @@ public class BakPersonsReply extends BakPersonal{
 		String s = url.substring(index + 3, index2);
 		String string = get(url);
 		String[] strs = split(string, "<div class=\"l_post l_post_bright j_l_post clearfix", "div");
-		System.out.println(strs.length);
+		//System.out.println(strs.length);
 		String string2 = "";
 		for(int i2 = 0; i2 < strs.length; i2++){
 			if(strs[i2].indexOf(id) != -1){
@@ -84,7 +88,7 @@ public class BakPersonsReply extends BakPersonal{
 				break;
 			}
 		}
-		System.out.println("(?<=" + id + ")[\\s\\S]*?</div></div>");
+		//System.out.println("(?<=" + id + ")[\\s\\S]*?</div></div>");
 		String String = get("https://tieba.baidu.com/p/totalComment?t=0&tid=" + s + "&pid=" + i + "&see_lz=0");
 		Object o = JSONObject.fromObject(String).getJSONObject("data").get("comment_list");
 		JSONObject json = null;
@@ -116,7 +120,7 @@ public class BakPersonsReply extends BakPersonal{
     		writer.write("<body>");
     		getAllReply();
     		//System.out.println(readMa);
-    		System.out.println(readMap);
+    		//System.out.println(readMap);
     		int n = readMap.size();
 			for(int i = 1; i < n + 1; i++){
 				if(readMap.get(i) == null)
@@ -124,13 +128,17 @@ public class BakPersonsReply extends BakPersonal{
 				urls.addAll(readMap.get(i));
 				titles.addAll(mapTitle.get(i));
 			}
+			System.out.println("所有回复：" + urls);
 			nowIndex = 0;
 			totel = urls.size();
-			for(int i = 0; i < totel; i++) {
+			/*for(int i = 0; i < totel; i++) {
 				System.out.print(urls.get(i));
-			}
+			}*/
+			System.out.println("备份所有回复...");
 			getReply(Bak.outMode);
 			sleep();
+			System.out.println("备份完毕");
+			System.out.println("输出文件");
 			for(int i = 0; i < urls.size(); i++){
 				if(map.get(i) == null)
 				System.out.println(urls.get(i));

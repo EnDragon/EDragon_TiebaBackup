@@ -16,18 +16,27 @@ import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.apache.commons.lang.ObjectUtils.Null;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class Floor {
+public class Floor extends BakFactoryNew{
 	String title = "";
 	public String user;
 	public String username;
 	public String content;
+	public long pid;
 	public String time = "";
 	public int num;
 	public long id;
 	public String from;
+	public String bar;
+	public int floorpe = THREAD;
+	
+	public static final int THREAD = 1;
+	public static final int PIC = 2;
+	
 	public Map<Integer, Floor> floors = new HashMap<>();
 	Floor a = null;
 	int now = 0;
@@ -37,6 +46,10 @@ public class Floor {
 	
 	public Floor(String title){
 		this.title = title;
+	}
+	
+	public Floor(long id){
+		this.id = id;
 	}
 	
 	public Floor(String user, String content, String time, int num, String from, String username){
@@ -85,6 +98,274 @@ public class Floor {
 		return null;
 	}
 	
+    public void check(String v, String s, Floor tie) throws Throwable{
+    	String t = "";
+		if(v.indexOf("id=\"ag_container") != -1){
+			String name = bar;
+			floorpe = PIC;
+			for(int I = 1; ; I++){
+				String str = Tool.getMore("http://tieba.baidu.com/photo/g/bw/picture/list?kw=" + name + "&tid=" + s + "&pn=" + I + "&info=1", requestHeader);
+				JSONObject jsonObject = JSONObject.fromObject(str);
+				if(jsonObject.getString("error").equals("failed!")){
+					System.err.println("ERROR 读取图册失败 " + s + " " + I);
+				}
+				if(str.indexOf("\"pic_list\":[]") != -1){
+					t += jsonObject.getJSONObject("data").getString("descr") + "<br>";
+					t += jsonObject.getJSONObject("data").getString("user_name") + "<br>";
+					break;
+				}
+				if(I == 1){
+					tie.title = "图册：" + jsonObject.getJSONObject("data").getString("title");
+				}
+				JSONArray js = jsonObject.getJSONObject("data").getJSONArray("pic_list");
+				for(int i3 = 0; i3 < js.size(); i3++){
+					JSONObject object = js.getJSONObject(i3);
+					String url = object.getString("purl");
+					t += "<img src=\"" + url + "\"></img>";
+				}
+			}
+			tie.get(1).content += t;
+		}
+		else{
+		
+		Matcher Matcher = Pattern.compile("span class=\"text\"[\\s\\S]*?收藏</(a|p)>").matcher(v);
+		if(!Matcher.find()){
+			/*try {
+				FileWriter writer = new FileWriter("F:\\I_LIKE\\AAA");
+				writer.write(v);
+				writer.close();
+			} catch (IOException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}*/
+			System.err.println(v + " " + s);
+		}
+		String sssss = Matcher.group();
+		Matcher = Pattern.compile("(?<=(title=\"))[\\s\\S]*?(?=\")").matcher(sssss);
+		if(!Matcher.find()){
+			System.err.println("NO FOUND TITLE " + s);
+		}
+		int i1 = v.indexOf("title: \"");
+		int i2 = v.indexOf("\"", i1 + 9);
+		System.out.println(s);
+		String title = Matcher.group();
+		System.out.println(title);
+		
+		tie.title = title;
+		}
+    }
+    
+    public int getPageCount(){
+    	String v = Tool.get("https://tieba.baidu.com/p/" + id, requestHeader);
+		Pattern nString = Pattern.compile("(?<=回复贴，共).*(?=页)");
+		Matcher matcher = nString.matcher(v);
+		if(!matcher.find()){
+			System.err.println("AAAAAAAAAAAAAA" + v + " " + id);
+		}
+		int l = Integer.parseInt(matcher.group().replaceAll("<[^>]*>", ""));
+		return l;
+    }
+	
+	public Floor getFloors(int page){
+		Floor floor = new Floor();
+		String V = Tool.get("https://tieba.baidu.com/p/" + id + "?pn=" + page, new HashMap<String, String>());
+		if(page == 1){
+			try {
+				check(V, id + "", floor);
+			} catch (Throwable e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
+		}
+		
+		String string = Tool.get("https://tieba.baidu.com/p/totalComment?t=0&tid=" + id + "&pn=" + page + "&see_lz=0", requestHeader);
+		Object o = JSONObject.fromObject(string).getJSONObject("data").get("comment_list");
+		JSONObject json = null;
+		if(!(o instanceof JSONArray)){
+		json = JSONObject.fromObject(string).getJSONObject("data").getJSONObject("comment_list");
+		}
+		JSONObject jso = json;
+		try {
+			to(V, "<div class=\"l_post.*?l_post_bright", new TT(){
+				public void run(Object... objects)  throws Throwable{
+					int nowIndex = (int)objects[0];
+					int prevIndex = (int)objects[1];
+					int now = 0;
+					int pi = nowIndex + 2;
+					int i2 = 0;
+					int nowIndexN = nowIndex + 1;
+					while(now >= 0){
+						int left = V.indexOf("<div", pi);
+						i2 = Math.min(left == -1 ? Integer.MAX_VALUE : left, V.indexOf("</div", pi));
+						now += V.charAt(i2 + 1) == '/' ? -1 : 1;
+						pi = i2 + 1;
+					}
+					String VV = V.substring(nowIndex, i2);
+					//System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAA:" + V);
+					a(VV, floor, id + "", jso, page, JSONObject.fromObject(string));
+				}
+			});
+		} catch (Throwable e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		System.out.println(page);//云里雾里的输出报告
+		return floor;
+	}
+	
+    private void a(String V, Floor tie, String s, JSONObject bak, int ints, JSONObject ojson) throws Throwable{
+		String find = "post_content_\\d{1,}[\\s\\S]*?style=\"display:.*?;\">";
+		to(V, find, new TT(){
+			public void run(Object... objects) throws Throwable{
+				int nowIndex = (int)objects[0];
+				int prevIndex = (int)objects[1];
+				Matcher matcher5 = (Matcher)objects[2];
+				int now = 0;
+				int i2 = 0;
+				int pi = nowIndex;
+				int nowIndexN = nowIndex;
+				while(now >= 0){
+					i2 = Math.min(V.indexOf("<div", pi), V.indexOf("</div", pi));
+					now += V.charAt(i2 + 1) == '/' ? -1 : 1;
+					pi = i2 + 4;
+				}
+					//System.out.println(nowIndexN + " " + i2);
+				if(nowIndex + matcher5.group().length() > i2){
+					System.err.println("OUT " + s + "\r\n" + V);
+				}
+				System.out.println(matcher5.group() + " " + i2);
+					String string = V.substring(nowIndex + matcher5.group().length(), i2).replaceAll("\\s", "");
+					System.out.println(string);
+					if(string.indexOf(">来自：") != -1){
+						Matcher matcher = Pattern.compile("(?<=r-url\">)tieba.*?(?=<)").matcher(string);
+						Matcher matcher2 = Pattern.compile("(?<=(=\"j-no-opener-url\">))[\\s\\S]*?(?=<)").matcher(string);
+						Matcher matcher3 = Pattern.compile("[\\s\\S]*?(?=(<p))").matcher(string);
+						matcher.find();
+						if(!matcher2.find()){
+							System.err.println(string);
+						}
+						matcher3.find();
+						String id = matcher.group();
+						id = id.replaceAll("\\?.*", "");
+						System.err.println("SHARE:" + id + " " + s);
+						//bak(id.substring(id.lastIndexOf("/") + 1));
+						string = matcher3.group() + "分享帖子：<!--share--><a href=\"" + id + matcher2.group() + "</a><!--share/-->";
+					}
+					//System.out.println(string);
+					Floor floor2 = new Floor();
+					floor2.content = string;
+					
+					tie.add(floor2);
+					//oStream.write(string);
+					/*String stri = string.replaceAll("\\s", "").replaceAll("<br>", "\r\n").replaceAll("<[^>]*>", "");
+					System.out.println(stri);
+					oStream.write("<lou>" + stri + "\n");
+					Pattern pattern = Pattern.compile("(?<=(<img))[^>]*(?=>)");
+					Matcher matcher = pattern.matcher(string);
+					while(matcher.find()){
+						//System.out.println(matcher.group());
+						Pattern pat = Pattern.compile("(?<=(src=\"))[^\"]*(?=\")");
+						Matcher matcher2 = pat.matcher(matcher.group());
+						matcher2.find();
+						if(map.get(matcher2.group()) == null){
+							String p = matcher2.group();
+							String name = p.substring(p.lastIndexOf("/"));
+							String aString = name.substring(name.lastIndexOf("."));
+							aString = aString.split("[#\\?&]")[0];
+							String nameee = s + " " + aaa.noww + aString;
+							download(matcher2.group(), path + "/pic/" + nameee);
+							map.put(matcher2.group(), nameee);
+							aaa.noww++;
+						}
+						oStream.write("<pic>" + map.get(matcher2.group()) + "\r\n");
+					}*/
+					
+					a2(V, floor2, s, ints);
+					
+					if(bak != null){
+						Pattern patte = Pattern.compile("(?<=(post_content_))\\d{1,}");
+						Matcher matche = patte.matcher(V);
+						matche.find();
+						
+						JSONObject jso = bak.getJSONObject(matche.group());
+						if(jso.toString().equals("null"))
+							return;
+						JSONArray array = jso.getJSONArray("comment_info");
+						for(int j = 0; j < array.size(); j++){
+							JSONObject aJsonObject = array.getJSONObject(j);
+							
+							//JSONObject jsonObject = ojson.getJSONObject("data").getJSONObject("user_list").getJSONObject(aJsonObject.getLong("user_id") + "");
+							//System.out.print(jsonObject);
+							//String[] strs = 
+							//user.println(jsonObject.getString("user_name") + " " + jsonObject.getString("user_nickname") + "\r\n");
+							Floor floor = new Floor(aJsonObject.getString("username"), aJsonObject.getString("content"), "", -1, "", aJsonObject.getString("username"));
+							//String[] sss = {aJsonObject.getString("content"), "---" + aJsonObject.getString("username")/* + " " + getTime(aJsonObject.getString("now_time"))*/ + "<br><hr>"};
+							floor2.add(floor);
+							//strings[i] += "\r\n  " + aJsonObject.get("content");
+						}
+					}
+			}
+		});
+    }
+    
+    /*public ArrayList<Floor> getFloors(){
+    	if(getDepth() == 1){
+    		
+    	}
+    }*/
+    
+    private void a2(String V, Floor tie, String s, int pn) throws Throwable{
+    	//System.out.println("AAAAA:::::::" + V);
+    	Pattern pattern = Pattern.compile("(alog-group=\"p_author\").*(</a>)");
+    	Matcher matcher = pattern.matcher(V);
+    	
+    	matcher.find();
+    	matcher.group();
+    	//System.out.println(matcher.group());
+    	Pattern p = Pattern.compile("(?<=(target=\"_blank\">)).*(?=</a>)");
+    	Matcher m = p.matcher(matcher.group(0));
+    	m.find();
+    	Matcher username = Pattern.compile("/home/main\\?un=[^&]*").matcher(V);
+    	username.find();
+    	Matcher username2 = Pattern.compile("(?<=(un=)).*").matcher(username.group());
+    	username2.find();
+    	tie.user = m.group();
+    	tie.username = URLDecoder.decode(username2.group(), "UTF-8");
+    	Pattern pa = Pattern.compile("(?<=(<span class=\"tail-info\">))[^>]*(?=</span>)");
+    	Matcher ma = pa.matcher(V);
+    	if(ma.find()){
+    		tie.num = Integer.parseInt(ma.group().substring(0, ma.group().indexOf("楼")));
+    	}
+    	if(ma.find()){
+    		tie.time = ma.group();
+    	}
+    	if(ma.find()){
+    		tie.from = ma.group();
+    	}
+    	
+    }
+    
+    public void add(int page, Floor floor){
+    	floors.put(page, floor);
+    }
+    
+    public void delete(int page){
+    	floors.remove(page);
+    }
+    
+    public void getAllPages(){
+    	int l = getPageCount();
+		for(int i = 1; i < l + 1; i++){
+			int pn = i;
+			Floor floor = getFloors(i);
+			add(floor);
+		}
+    }
+    
+    public int getDepth(){
+    	return a == null ? 1 : a.a == null ? 2 : a.a.a == null ? 3 : -1;
+    }
+	
 	public String write(String mode){
 		if(mode.equals("HTML")){
 			if(a== null){
@@ -105,7 +386,7 @@ public class Floor {
 				return "<p text-indent:2em>" + get(content, "content") + "</p><p text-indent:2em>" + get(user, "user") + get("<!--" + username + "-->", "username") + " " + get(num + "", "num") + "楼 " + get(time, "time") + "</p>" + "<div style=\"background-color:#808080\">" + str + "</div><hr>";
 			}
 			if(a.a.a == null){
-				return get(content, "content") + " " + "---" + get(user, "user") + " " + get(time, "time") + "<br><hr>";
+				return get(content, "content") + " " + "---" + get(username, "username") + " " + get(user, "user") + " " + get(time, "time") + "<br><hr>";
 			}
 		}
 		else if(mode.equals("JSON")){
@@ -199,7 +480,14 @@ public class Floor {
 		if(a.a.a == null){
 			jsonObject.put("model", "floor2");
 			jsonObject.put("content", content);
+			jsonObject.put("nickname", user);
 			jsonObject.put("username", username);
+			try {
+				jsonObject.put("time", new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(time).getTime());
+			} catch (ParseException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
+			}
 			return jsonObject;
 		}
 		return null;
@@ -233,51 +521,4 @@ public class Floor {
 		}
 		return null;
 	}
-	
-	/*public static void update(){
-    	try {
-    		boolean b = true;
-    		if(b)
-    			return;
-    		String path = URLDecoder.decode(Bak.class.getProtectionDomain().getCodeSource().getLocation().getPath().substring(1), "UTF-8");
-			FileInputStream stream = new FileInputStream(path);
-			byte[] bytes = new byte[1024];
-			int c = 0;
-			StringBuffer buffer = new StringBuffer("");
-			while((c = stream.read(bytes)) > 0) {
-				buffer.append(new String(bytes, 0, c));
-			}
-			stream.close();
-			System.out.println(new File(Bak.class.getProtectionDomain().getCodeSource().getLocation().getPath().replaceAll("%20", " ")).canRead());
-			byte[] md55 = MessageDigest.getInstance("MD5").digest(buffer.toString().getBytes());
-			String str = Bak.get("https://api.github.com/repos/EnDragon/TieBaBak/contents/update", "Authorization", "token 12dc897e7550c81112899fdf0342e71889596baa");
-			//System.out.println(str);
-			JSONObject jsonObject = JSONObject.fromObject(str);
-			String content = jsonObject.getString("content");
-			String str2 = "";
-			String[] strs = content.split("\\n");
-			for(int i = 0; i < strs.length; i++){
-				str2 += new String(Base64.getDecoder().decode(strs[i]));
-			}
-			System.out.println(str2);
-			JSONObject json = JSONObject.fromObject(str2);
-			String MD5 = json.getJSONObject("MD5").getString("V0.8.4");
-			String md5 = "";
-			for(int i = 0; i < 16; i++) {
-				String sss = Integer.toString(Byte.toUnsignedInt(md55[i]), 16);
-				md5 += sss.length() == 1 ? "0" + sss : sss;
-			}
-			if(!new String(md5).equals(MD5)) {
-				JFrame frame = new JFrame();
-				JLabel label = new JLabel("<html><font size=50px>你使用的软件是盗版软件<br>本软件名称：E龙贴吧备份<br>作者：QQ:3477232849<br>如果发现盗版请与我联系<br>正版软件下载地址：https://github.com/EnDragon/EDragon_TiebaBackup<br>本软件为免费软件，请不要用于非法用途</font></html>");
-				label.setFont(new Font(label.getFont().getName(), 1, 50));
-				frame.add(label);
-				frame.setBounds(100, 100, 1000, 700);
-				frame.setVisible(true);
-			}
-		} catch (Throwable e3) {
-			// TODO Auto-generated catch block
-			e3.printStackTrace();
-		}
-	}*/
 }
